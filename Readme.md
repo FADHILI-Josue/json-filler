@@ -1,6 +1,11 @@
 # Json Filler
 
-**Note:** he extension is under review right now. stay tuned.
+> ⚠️ **Note**
+>
+> The extension is currently under review. Please stay tuned.
+>
+> ![Status: Under Review](https://img.shields.io/badge/status-under%20review-yellow)
+
 **Json Filler** is a Chrome extension designed to boost developer productivity by automatically filling JSON inputs (like in Swagger UI) with realistic, context-aware dummy data.
 
 It recursively parses your JSON schema and generates smart data based on keys (e.g., email, phone) and preserves the format of existing numbers.
