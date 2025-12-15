@@ -4,7 +4,7 @@
 
 It recursively parses your JSON schema and generates smart data based on keys (e.g., email, phone) and preserves the format of existing numbers.
 
-[demo]()
+[demo](https://fadhili-josue.github.io/json-filler)
 
 ## ✨ Features
 
