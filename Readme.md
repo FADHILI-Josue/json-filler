@@ -1,10 +1,13 @@
 # Json Filler
 
+**Note:** he extension is under review right now. stay tuned.
 **Json Filler** is a Chrome extension designed to boost developer productivity by automatically filling JSON inputs (like in Swagger UI) with realistic, context-aware dummy data.
 
 It recursively parses your JSON schema and generates smart data based on keys (e.g., email, phone) and preserves the format of existing numbers.
 
 [demo](https://fadhili-josue.github.io/json-filler)
+![preview image](./docs/preview.png)
+
 
 ## ✨ Features
 
