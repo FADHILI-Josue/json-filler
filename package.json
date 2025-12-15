@@ -1,0 +1,20 @@
+{
+  "name": "swagger-filler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:content": "esbuild src/content.ts --bundle --outfile=build/content.js --format=iife --platform=browser",
+    "build:background": "esbuild src/background.ts --bundle --outfile=build/background.js --format=esm",
+    "build": "npm run build:content && npm run build:background"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@types/chrome": "^0.1.32",
+    "esbuild": "^0.27.1",
+    "typescript": "^5.9.3"
+  }
+}

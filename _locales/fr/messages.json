@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Json Filler",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Remplissez automatiquement les champs JSON avec des données fictives réalistes et contextuelles.",
+    "description": "The description of the extension"
+  },
+  "contextFill": {
+    "message": "Remplir avec des données aléatoires",
+    "description": "Context menu item text"
+  }
+}

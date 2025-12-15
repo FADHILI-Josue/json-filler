@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "nodenext",
+    "outDir": "build",
+    "lib": ["DOM", "ES2024"],
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext"
+  },
+  "include": ["src/**/*.ts"]
+}
