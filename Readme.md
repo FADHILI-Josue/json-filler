@@ -7,6 +7,9 @@ It recursively parses your JSON schema and generates smart data based on keys (e
 [demo](https://fadhili-josue.github.io/json-filler)
 ![preview image](./docs/preview.png)
 
+## Installation
+
+You can download the Json Filler Chrome extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/hgfmldndmbpfemfelmcpalmjgepliiog?utm_source=item-share-cb).
 
 ## ✨ Features
 
