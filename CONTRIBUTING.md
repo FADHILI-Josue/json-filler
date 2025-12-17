@@ -6,7 +6,7 @@ First off, thanks for taking the time to contribute! 🎉
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/FADHILI-Josue/swagger-filler.git
+   git clone https://github.com/FADHILI-Josue/json-filler.git
    ```
 
 2. **Install dependencies**

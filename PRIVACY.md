@@ -1,4 +1,4 @@
-## Privacy Policy for Swagger Fake Filler
+## Privacy Policy for Json Filler
 
 **Last updated:** 15th November 2025
 
