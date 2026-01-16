@@ -2,13 +2,41 @@ import DataGenerator from "../data-generator";
 import { isUuid } from "../../lib/isUUID";
 import { matches, KEYWORDS } from "./heuristics";
 import { generateSmartNumber } from "../math-utils";
+import { EMAIL_REGEX, TEL_REGEX, URL_REGEX } from "../constants";
 
 const gen = new DataGenerator();
 
+function isEmail(value: string): boolean {
+    return EMAIL_REGEX.test(value);
+}
+
+function isPhone(value: string): boolean {
+    return TEL_REGEX.test(value);
+}
+
+function isUrl(value: string): boolean {
+    return URL_REGEX.test(value) && (value.startsWith('http://') || value.startsWith('https://') || value.includes('.'));
+}
+
+
 export function generateLeafValue(originalValue: any, key: string): any {
-    // 1. Value-based check (UUIDs)
-    if (typeof originalValue === "string" && isUuid(originalValue)) {
-        return crypto.randomUUID ? crypto.randomUUID() : "63a878f5-53bc-4ad3-ace8-a89302413d0b";
+    // 1. Value-based type detection (checks actual value format first)
+    if (typeof originalValue === "string") {
+        if (isUuid(originalValue)) {
+            return crypto.randomUUID ? crypto.randomUUID() : "63a878f5-53bc-4ad3-ace8-a89302413d0b";
+        }
+        
+        if (isEmail(originalValue)) {
+            return generateEmail();
+        }
+        
+        if (isPhone(originalValue)) {
+            return gen.phoneNumber();
+        }
+        
+        if (isUrl(originalValue)) {
+            return gen.website();
+        }
     }
 
     if (typeof originalValue === "number") {
@@ -19,7 +47,7 @@ export function generateLeafValue(originalValue: any, key: string): any {
         return Math.random() > 0.5;
     }
 
-    // 2. Key-based Heuristics
+    // 2. Key-based Heuristics (fallback when value type cannot be determined)
     if (matches(key, KEYWORDS.email)) return generateEmail();
     if (matches(key, KEYWORDS.phone)) return gen.phoneNumber();
     if (matches(key, KEYWORDS.name_first)) return gen.firstName();
