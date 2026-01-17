@@ -1,6 +1,6 @@
 export const DEFAULT_TELEPHONE_TEMPLATE = "+1 (XxX) XxX-XxxX";
 
-export const CURRENT_SETTINGS_VERSION = 1;
+export const CURRENT_SETTINGS_VERSION = 2;
 
 export const URL_REGEX = new RegExp(
   /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi

@@ -5,40 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Test playground for Json Filler Chrome Extension. Generate realistic dummy JSON data automatically.">
-    <meta name="keywords" content="json, fake data, chrome extension, swagger, developer tool, testing">
+    <meta name="description" content="Json Filler for Swagger UI and JSON forms. Automatically generate realistic dummy data for API testing.">
+    <meta name="keywords" content="swagger ui, openapi, json filler, fake data, chrome extension, api testing, developer tool">
     <meta name="author" content="FADHILI Josue">
-    <meta property="og:title" content="Json Filler Playground">
-    <meta property="og:description" content="Test the smartest way to populate JSON with realistic dummy data.">
+    <meta property="og:title" content="Json Filler - Dummy Data for Swagger & APIs">
+    <meta property="og:description" content="The smartest way to populate Swagger UI and JSON inputs with realistic dummy data.">
     <meta property="og:type" content="website">
 
-    <title>Json Filler - Playground</title>
+    <title>Json Filler - The Swagger UI Companion</title>
     
-    <!-- Fonts -->
+    <!-- Fonts - System stack fallbacks used -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Monochrome Palette */
-            --bg-body: #f3f4f6;       /* Light Gray */
-            --bg-card: #ffffff;       /* Pure White */
-            --text-primary: #111827;  /* Almost Black */
-            --text-secondary: #4b5563;/* Dark Gray */
-            --text-tertiary: #9ca3af; /* Light Gray Text */
-            --border-color: #e5e7eb;  /* Subtle Border */
-            --focus-ring: #1f2937;    /* Dark Focus Ring */
+            --bg-body: #f8fafc;       
+            --bg-card: #ffffff;       
+            --text-primary: #0f172a;  
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8; 
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --border-color: #e2e8f0;  
+            --focus-ring: #6366f1;    
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* System font stack for best performance and offline look */
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-primary);
             margin: 0;
@@ -49,7 +49,7 @@
         }
 
         main {
-            max-width: 1000px; /* Slightly reduced width for better 2-col look */
+            max-width: 1000px;
             margin: 0 auto;
             padding: 4rem 1.5rem;
             width: 100%;
@@ -58,94 +58,121 @@
 
         /* Typography & Header */
         header {
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
             text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: var(--primary-dark);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         h1 {
             color: var(--text-primary);
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
             letter-spacing: -0.05em;
             margin: 0 0 1rem 0;
+            background: linear-gradient(135deg, #1e293b 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: 1.125rem;
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
+            font-size: 1.25rem;
+            max-width: 650px;
+            margin: 0 auto 2.5rem auto;
+            line-height: 1.6;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.5);
         }
 
         /* Instructions Box */
         .instructions {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 3rem auto 0 auto;
             text-align: left;
             box-shadow: var(--shadow-sm);
-        }
-
-        .instructions h3 {
-            margin: 0 0 1rem 0;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-tertiary);
         }
 
         .step-list {
             margin: 0;
             padding-left: 1.2rem;
             color: var(--text-secondary);
+            font-size: 1rem;
         }
-
-        .step-list li {
-            margin-bottom: 0.5rem;
-        }
+        
+        .step-list li { margin-bottom: 0.5rem; }
 
         code {
-            background-color: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            color: var(--text-primary);
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85em;
         }
 
-        /* Grid Layout - Mobile First (1 column) */
+        /* Grid */
         .grid {
             display: grid;
             grid-template-columns: 1fr; 
             gap: 2rem;
         }
 
-        /* Grid Layout - Desktop (Strictly 2 columns) */
         @media (min-width: 768px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* Cards */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.2s, transform 0.2s;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
         .card:hover {
             box-shadow: var(--shadow-md);
-            border-color: #d1d5db;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
 
         .card-header {
@@ -158,20 +185,21 @@
         }
 
         .card-header h2 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin: 0;
             color: var(--text-primary);
         }
 
         .tag {
-            font-size: 0.75rem;
-            background-color: #f3f4f6;
+            font-size: 0.7rem;
+            background-color: #f1f5f9;
             color: var(--text-secondary);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-            border: 1px solid #e5e7eb;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
+            letter-spacing: 0.05em;
         }
 
         /* Textareas */
@@ -185,7 +213,7 @@
             color: var(--text-secondary);
             background-color: #ffffff;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             resize: vertical;
             transition: all 0.2s ease;
         }
@@ -194,12 +222,12 @@
             outline: none;
             border-color: var(--focus-ring);
             color: var(--text-primary);
-            box-shadow: 0 0 0 1px var(--focus-ring);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
 
         /* Footer */
         footer {
-            background-color: var(--bg-card);
+            background-color: white;
             border-top: 1px solid var(--border-color);
             padding: 3rem 1.5rem;
             text-align: center;
@@ -209,7 +237,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .made-with {
@@ -218,27 +246,12 @@
         }
 
         .repo-link {
-            color: var(--text-primary);
+            color: var(--primary);
             text-decoration: none;
-            border-bottom: 2px solid #e5e7eb;
-            transition: border-color 0.2s;
+            font-weight: 600;
         }
-
-        .repo-link:hover {
-            border-bottom-color: var(--text-primary);
-        }
-
-        .support-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Container to shrink the BMC button slightly */
-        .bmc-container {
-            transform: scale(0.85); /* Scales the button down to 85% size */
-            transform-origin: center top;
-        }
+        
+        .repo-link:hover { text-decoration: underline; }
 
         .heart {
             color: #ef4444;
@@ -257,22 +270,26 @@
 <body>
     <main>
         <header>
-            <div style="display: flex;align-items: center;justify-content: center; margin-bottom: 10px;">
-                <img src="./icon.png" alt="json filler logo" height="60" style="margin-right: 10px;">
+            <div class="hero-badge">New Version 2.0</div>
+            <div style="display: flex;align-items: center;justify-content: center; margin-bottom: 16px;">
+                <img src="./icon.png" alt="json filler logo" height="70" style="margin-right: 15px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
                 <h1 style="margin:0px;">Json Filler</h1>
             </div>
-            <p class="subtitle">Populate your JSON with realistic, context-aware dummy data instantly.</p>
+            
+            <p class="subtitle">
+                Stop typing manual JSON. Automatically fill <strong>Swagger UI</strong>, Postman, and web forms with realistic, context-aware dummy data.
+            </p>
 
-            <div style="text-align: center; margin-bottom: 2rem;">
-            <a href="https://chromewebstore.google.com/detail/hgfmldndmbpfemfelmcpalmjgepliiog?utm_source=item-share-cb" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4285f4; color: white; text-decoration: none; border-radius: 5px; font-weight: 500;">Download from Chrome Web Store</a>
-            </div>
+            <a href="https://chromewebstore.google.com/detail/hgfmldndmbpfemfelmcpalmjgepliiog?utm_source=item-share-cb" target="_blank" class="cta-button">
+                Get it on Chrome Web Store
+            </a>
             
             <div class="instructions">
-                <h3>Instructions</h3>
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">Try it right here:</div>
                 <ol class="step-list">
-                    <li>Ensure the extension is installed.</li>
-                    <li><strong>Right-click</strong> inside any JSON box below.</li>
-                    <li>Select <code>Fill with random data</code>.</li>
+                    <li>Right-click inside any code block below.</li>
+                    <li>Select <strong>Fill with random data</strong> from the context menu.</li>
+                    <li>Watch it detect types (Email, UUID, Dates) automatically!</li>
                 </ol>
             </div>
         </header>
@@ -281,32 +298,35 @@
             <!-- Case 1 -->
             <div class="card">
                 <div class="card-header">
-                    <h2>Simple Object</h2>
-                    <span class="tag">BASIC</span>
+                    <h2>Swagger / OpenAPI Schema</h2>
+                    <span class="tag">API</span>
                 </div>
 <textarea spellcheck="false">{
-  "id": 1,
-  "name": "John Doe",
-  "email": "example@email.com",
-  "isActive": true
+  "id": 101,
+  "username": "jdoe",
+  "email": "user@example.com",
+  "phone": "+1-555-0100",
+  "role": "ADMIN"
 }</textarea>
             </div>
             
             <!-- Case 2 -->
             <div class="card">
                 <div class="card-header">
-                    <h2>Nested Object</h2>
-                    <span class="tag">RECURSIVE</span>
+                    <h2>Complex User Profile</h2>
+                    <span class="tag">NESTED</span>
                 </div>
 <textarea spellcheck="false">{
   "user": {
-    "userId": "user-123",
-    "firstName": "Jane",
-    "lastName": "Smith",
+    "uuid": "123e4567-e89b-12d3-a456-426614174000",
+    "details": {
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "dob": "1990-01-01"
+    },
     "address": {
       "street": "123 Main St",
-      "city": "Anytown",
-      "zipCode": "12345"
+      "zipCode": "90210"
     }
   }
 }</textarea>
@@ -315,20 +335,22 @@
             <!-- Case 3 -->
             <div class="card">
                 <div class="card-header">
-                    <h2>Arrays & Lists</h2>
-                    <span class="tag">ITERABLE</span>
+                    <h2>Product Lists</h2>
+                    <span class="tag">ARRAYS</span>
                 </div>
 <textarea spellcheck="false">{
   "products": [
     {
-      "productId": "prod_abc",
-      "productName": "Widget",
-      "stock": 100
+      "sku": "PROD-001",
+      "name": "Widget A",
+      "price": 29.99,
+      "inStock": true
     },
     {
-      "productId": "prod_xyz",
-      "productName": "Gadget",
-      "stock": 50
+      "sku": "PROD-002",
+      "name": "Widget B",
+      "price": 45.50,
+      "inStock": false
     }
   ]
 }</textarea>
@@ -337,52 +359,21 @@
             <!-- Case 4 -->
             <div class="card">
                 <div class="card-header">
-                    <h2>Complex Structure</h2>
-                    <span class="tag">DEEP</span>
+                    <h2>Company Metadata</h2>
+                    <span class="tag">HEURISTICS</span>
                 </div>
 <textarea spellcheck="false">{
-  "company": {
-    "name": "Tech Inc.",
-    "founded": 2010,
-    "contact": {
-      "phone": "555-123-4567",
-      "email": "contact@tech.com"
-    },
-    "staff": [
-      { "id": 1, "fullName": "Alice" },
-      { "id": 2, "fullName": "Bob" }
-    ]
+  "organization": {
+    "name": "Acme Corp",
+    "website": "https://acme.com",
+    "founded": 1985,
+    "description": "A global leader in widgets."
+  },
+  "metadata": {
+    "createdAt": "2023-10-25T10:00:00Z",
+    "updatedAt": "2023-10-26T12:00:00Z",
+    "version": 1.5
   }
-}</textarea>
-            </div>
-            
-            <!-- Case 5 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Numbers & Precision</h2>
-                    <span class="tag">MATH</span>
-                </div>
-<textarea spellcheck="false">{
-  "intValue": 1234,
-  "floatValue": 99.99,
-  "largeInt": 5829103,
-  "zero": 0,
-  "negative": -50
-}</textarea>
-            </div>
-
-            <!-- Case 6 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Smart Keys</h2>
-                    <span class="tag">HEURISTIC</span>
-                </div>
-<textarea spellcheck="false">{
-  "uuid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "createdAt": "2023-01-01T12:00:00Z",
-  "website": "https://example.com",
-  "avatar": "https://example.com/img.png",
-  "description": "Short bio here"
 }</textarea>
             </div>
         </div>
@@ -391,18 +382,17 @@
     <footer>
         <div class="footer-content">
             <div class="made-with">
-                Made with <span class="heart">💖</span> by 
-                <a href="https://github.com/FADHILI-Josue/json-filler" target="_blank" class="repo-link">FADHILI Josue</a>
+                Open Source Project by <a href="https://github.com/FADHILI-Josue/json-filler" target="_blank" class="repo-link">FADHILI Josue</a>
             </div>
             
             <div class="support-text">
-                If you find this helpful, feel free to buy me a coffee 😎😎
+                Save hours of manual data entry in Swagger UI.
             </div>
 
-            <!-- Buy Me A Coffee Button (Scaled Down) -->
-            <div class="bmc-container">
-                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="fadhilijosz" data-color="#FFDD00" data-emoji="☕"  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
-            </div>
+            <!-- Buy Me A Coffee Button -->
+            <a href="https://buymeacoffee.com/fadhilijosz" target="_blank">
+                <img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" alt="Buy Me A Coffee" style="height: 60px; width: 250px;">
+            </a>
         </div>
     </footer>
 </body>

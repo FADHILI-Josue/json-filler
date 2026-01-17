@@ -1,12 +1,13 @@
 {
   "name": "json-filler",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build:content": "esbuild src/content.ts --bundle --outfile=build/content.js --format=iife --platform=browser",
     "build:background": "esbuild src/background.ts --bundle --outfile=build/background.js --format=esm",
-    "build": "npm run build:content && npm run build:background"
+    "build:popup": "esbuild src/popup.ts --bundle --outfile=build/popup.js --format=iife --platform=browser",
+    "build": "npm run build:content && npm run build:background && npm run build:popup"
   },
   "keywords": [],
   "author": "",

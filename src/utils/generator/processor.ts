@@ -3,6 +3,8 @@ import { isUuid } from "../../lib/isUUID";
 import { matches, KEYWORDS } from "./heuristics";
 import { generateSmartNumber } from "../math-utils";
 import { EMAIL_REGEX, TEL_REGEX, URL_REGEX } from "../constants";
+import { FieldConfig } from "../config-types";
+import { generateFromConfig } from "./config-processor";
 
 const gen = new DataGenerator();
 
@@ -19,7 +21,11 @@ function isUrl(value: string): boolean {
 }
 
 
-export function generateLeafValue(originalValue: any, key: string): any {
+export function generateLeafValue(originalValue: any, key: string, fieldConfig?: FieldConfig | null): any {
+    // 0. Check if configuration exists (highest priority)
+    if (fieldConfig && fieldConfig.dataType !== "auto") {
+        return generateFromConfig(fieldConfig, originalValue);
+    }
     // 1. Value-based type detection (checks actual value format first)
     if (typeof originalValue === "string") {
         if (isUuid(originalValue)) {

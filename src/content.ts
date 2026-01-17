@@ -1,5 +1,6 @@
 import { generateFakeData } from "./utils/generator";
 import { showErrorToast } from "./utils/styles";
+import { getConfig } from "./utils/config-manager";
 
 const el = document.activeElement;
 
@@ -10,8 +11,10 @@ const el = document.activeElement;
             // || el instanceof HTMLInputElement
         ) {
             try {
-                const inputData = JSON.parse(el.value)
-                el.value = generateFakeData(inputData);
+                const inputData = JSON.parse(el.value);
+                // Load configurations from storage
+                const config = await getConfig();
+                el.value = generateFakeData(inputData, config.mappings);
             } catch (error) {
                 throw Error("Invalid json provided")
             }
