@@ -2,36 +2,20 @@ import DataGenerator from "./data-generator";
 
 const gen = new DataGenerator();
 
+/** Random number with the same sign, digit count and decimal places as the original. */
 export function generateSmartNumber(original: number): number {
-    const originalString = original.toString();
-    
-    // Handle Decimals
-    if (originalString.includes('.')) {
-        const parts = originalString.split('.');
-        const integerPart = parts[0];
-        const decimalPart = parts[1];
+    // Exponent notation (1e21, 1e-7) has no digit layout to copy
+    if (/e/i.test(String(original))) return original;
 
-        // Generate integer part with same length
-        const minInt = Math.pow(10, integerPart.length - 1);
-        const maxInt = Math.pow(10, integerPart.length) - 1;
-        
-        // Generate decimal part
-        // We generate a number and divide it to get the right precision
-        const randomInt = gen.randomNumber(minInt, maxInt);
-        const randomDecimal = gen.randomNumber(0, Math.pow(10, decimalPart.length) - 1);
-        
-        return parseFloat(`${randomInt}.${randomDecimal.toString().padStart(decimalPart.length, '0')}`);
-    }
+    const sign = original < 0 ? -1 : 1;
+    const [intPart, decPart = ""] = Math.abs(original).toString().split(".");
+    const len = intPart.length;
 
-    // Handle Integers mantaining length
-    const length = originalString.length;
-    
-    if (length === 1) {
-        return gen.randomNumber(0, 9);
-    }
+    // Keep 0.x below 1; otherwise keep the digit count (single digits may become 0)
+    const int = decPart && intPart === "0" ? 0 : gen.randomNumber(len === 1 ? 0 : 10 ** (len - 1), 10 ** len - 1);
+    const dec = decPart
+        ? `.${String(gen.randomNumber(0, 10 ** decPart.length - 1)).padStart(decPart.length, "0")}`
+        : "";
 
-    const min = Math.pow(10, length - 1);
-    const max = Math.pow(10, length) - 1;
-    
-    return gen.randomNumber(min, max);
+    return sign * parseFloat(`${int}${dec}`);
 }
