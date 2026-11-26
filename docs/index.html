@@ -3,397 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Json Filler for Swagger UI and JSON forms. Automatically generate realistic dummy data for API testing.">
-    <meta name="keywords" content="swagger ui, openapi, json filler, fake data, chrome extension, api testing, developer tool">
+    <title>Json Filler: test data for Swagger UI</title>
+    <meta name="description" content="Free Chrome extension that fills Swagger UI request bodies with realistic test data in one right-click.">
     <meta name="author" content="FADHILI Josue">
-    <meta property="og:title" content="Json Filler - Dummy Data for Swagger & APIs">
-    <meta property="og:description" content="The smartest way to populate Swagger UI and JSON inputs with realistic dummy data.">
+    <meta property="og:title" content="Json Filler: test data for Swagger UI">
+    <meta property="og:description" content="Right-click a request body, get realistic test data. Free and open source.">
     <meta property="og:type" content="website">
-
-    <title>Json Filler - The Swagger UI Companion</title>
-    
-    <!-- Fonts - System stack fallbacks used -->
+    <meta property="og:image" content="https://fadhili-josue.github.io/json-filler/preview.png">
+    <link rel="icon" href="./icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-body: #f8fafc;       
-            --bg-card: #ffffff;       
-            --text-primary: #0f172a;  
-            --text-secondary: #475569;
-            --text-tertiary: #94a3b8; 
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --border-color: #e2e8f0;  
-            --focus-ring: #6366f1;    
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --bg: #ffffff;
+            --soft: #f6f7f9;
+            --line: #e5e7eb;
+            --ink: #111827;
+            --muted: #6b7280;
+            --accent: #2563eb;
+            --mono: "JetBrains Mono", ui-monospace, monospace;
         }
-
         * { box-sizing: border-box; }
+        body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+        a { color: inherit; }
+        .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-        body {
-            /* System font stack for best performance and offline look */
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-            margin: 0;
-            line-height: 1.5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        /* Top bar */
+        .top { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
+        .brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .top nav { display: flex; align-items: center; gap: 20px; font-size: .95rem; }
+        .top nav a:not(.btn) { color: var(--muted); text-decoration: none; }
+        .top nav a:not(.btn):hover { color: var(--ink); }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 8px; font: 500 .95rem Inter, sans-serif; text-decoration: none; cursor: pointer; border: 1px solid var(--line); background: #fff; color: var(--ink); transition: transform .15s, background-color .15s; }
+        .btn:hover { transform: translateY(-1px); background: var(--soft); }
+        .btn:active { transform: scale(.98); }
+        .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-sm { min-height: 34px; padding: 0 12px; font-size: .88rem; }
+        .btn svg { width: 16px; height: 16px; }
+
+        /* Highlights for the key words */
+        .mark { background: linear-gradient(transparent 58%, #bfdbfe 58%); padding: 0 .08em; }
+        .pill { display: inline-flex; align-items: center; gap: 6px; padding: 1px 10px; border-radius: 999px; background: #eff6ff; color: var(--accent); border: 1px solid #bfdbfe; font-weight: 600; font-size: .95em; white-space: nowrap; }
+        .pill img { width: 16px; height: 16px; border-radius: 4px; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 500; color: var(--accent); background: #eff6ff; border-radius: 999px; padding: 4px 12px; margin-bottom: 18px; }
+        .badge i { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px #dcfce7; }
+        code.inline { background: #eff6ff; color: #1e40af; padding: 1px 6px; border-radius: 4px; font-size: .85em; }
+
+        /* Hero */
+        .hero { text-align: center; padding: 56px 0 40px; }
+        .hero h1 { font-family: "Plus Jakarta Sans", Inter, sans-serif; color: #1f2937; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; margin: 0 auto; max-width: 16em; }
+        .hero p { color: var(--muted); font-size: 1.15rem; max-width: 34em; margin: 16px auto 0; }
+        .actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+        /* Demo window */
+        .hero .demo-label { margin: 56px 0 16px; font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+        .window { position: relative; max-width: 640px; margin: 0 auto; text-align: left; border: 1px solid #bfdbfe; border-radius: 12px; box-shadow: 0 0 0 6px #eff6ff, 0 24px 50px -25px rgba(37, 99, 235, .35); background: #fff; overflow: hidden; }
+        .window-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: .9rem; }
+        .method { background: #49cc90; color: #fff; font: 600 .75rem var(--mono); padding: 3px 8px; border-radius: 4px; }
+        .window-bar code { font-family: var(--mono); }
+        .window-bar button { margin-left: auto; min-height: 36px; padding: 0 12px; font-size: .85rem; }
+        .code { margin: 16px; padding: 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; transition: border-color .3s, box-shadow .3s; font: .85rem/1.7 var(--mono); white-space: pre; overflow-x: auto; min-height: 250px; }
+        .k { color: #1e40af; } .s { color: #047857; } .n { color: #b45309; } .b { color: #be123c; }
+        .code.active { border-color: var(--accent); box-shadow: 0 0 0 3px #dbeafe; }
+        .flash { animation: flash 1.6s ease; border-radius: 3px; }
+        @keyframes flash { 0%, 40% { background: #bbf7d0; } to { background: transparent; } }
+
+        /* Fake cursor, context menu and tooltip */
+        .cursor { position: absolute; left: 0; top: 0; width: 20px; height: 20px; pointer-events: none; opacity: 0; transition: transform .7s cubic-bezier(.4, 0, .2, 1), opacity .3s; z-index: 3; }
+        .cursor svg { width: 20px; height: 20px; transition: transform .12s; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3)); }
+        .cursor.press svg { transform: scale(.8); }
+        .tip { position: absolute; left: 4px; top: 26px; white-space: nowrap; background: var(--ink); color: #fff; font-size: .75rem; padding: 3px 8px; border-radius: 5px; opacity: 0; transform: translateY(-4px); transition: opacity .2s, transform .2s; }
+        .tip.show { opacity: 1; transform: none; }
+        .menu { position: absolute; width: 210px; padding: 4px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 10px 30px -10px rgba(17, 24, 39, .3); font-size: .82rem; opacity: 0; transform: scale(.97); transform-origin: top left; transition: opacity .15s, transform .15s; pointer-events: none; z-index: 2; }
+        .menu.open { opacity: 1; transform: none; }
+        .menu div { padding: 6px 10px; border-radius: 5px; color: var(--muted); }
+        .menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+        .menu .item { display: flex; align-items: center; gap: 8px; color: var(--ink); }
+        .menu .item img { width: 14px; height: 14px; border-radius: 3px; }
+        .menu .item.hover { background: var(--accent); color: #fff; }
+
+        /* Sections */
+        section { padding: 72px 0; }
+        h2 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 8px; }
+        .sub { color: var(--muted); margin: 0 0 32px; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .steps h3 { font-size: 1rem; font-weight: 600; margin: 0 0 4px; }
+        .steps p { color: var(--muted); margin: 0; font-size: .95rem; }
+        .steps > div { border: 1px solid var(--line); border-radius: 10px; padding: 20px; transition: border-color .2s, transform .2s; }
+        .steps > div:hover { border-color: #bfdbfe; transform: translateY(-2px); }
+        .steps .n { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 600; font-size: .85rem; margin-bottom: 12px; }
+        .try { background: var(--soft); }
+        .pads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .pad { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 10px; padding: 16px; }
+        .pad h3 { font-size: .95rem; font-weight: 600; margin: 0 0 10px; }
+        textarea { width: 100%; min-height: 300px; resize: vertical; padding: 12px; font: .82rem/1.6 var(--mono); color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: 8px; }
+        textarea:focus { outline: none; border-color: var(--accent); }
+        .pad-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+        .error { color: #b91c1c; font-size: .85rem; }
+        footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: .9rem; }
+        footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+        footer nav { display: flex; gap: 20px; }
+        footer a { text-decoration: none; }
+        footer a:hover { color: var(--ink); }
+        footer img { height: 40px; display: block; }
+
+        @media (max-width: 720px) {
+            .steps, .pads { grid-template-columns: 1fr; }
+            .top nav a.hide-sm { display: none; }
+            .code { font-size: .75rem; }
         }
-
-        main {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 4rem 1.5rem;
-            width: 100%;
-            flex: 1;
-        }
-
-        /* Typography & Header */
-        header {
-            margin-bottom: 5rem;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: #e0e7ff;
-            color: var(--primary-dark);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 100px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        h1 {
-            color: var(--text-primary);
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            margin: 0 0 1rem 0;
-            background: linear-gradient(135deg, #1e293b 0%, #6366f1 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-            max-width: 650px;
-            margin: 0 auto 2.5rem auto;
-            line-height: 1.6;
-        }
-
-        /* CTA Button */
-        .cta-button {
-            display: inline-block;
-            padding: 14px 28px;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
-        }
-
-        .cta-button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.5);
-        }
-
-        /* Instructions Box */
-        .instructions {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            max-width: 600px;
-            margin: 3rem auto 0 auto;
-            text-align: left;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .step-list {
-            margin: 0;
-            padding-left: 1.2rem;
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-        
-        .step-list li { margin-bottom: 0.5rem; }
-
-        code {
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85em;
-        }
-
-        /* Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr; 
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: #cbd5e1;
-            transform: translateY(-2px);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .card-header h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0;
-            color: var(--text-primary);
-        }
-
-        .tag {
-            font-size: 0.7rem;
-            background-color: #f1f5f9;
-            color: var(--text-secondary);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 600;
-            border: 1px solid #e2e8f0;
-            letter-spacing: 0.05em;
-        }
-
-        /* Textareas */
-        textarea {
-            width: 100%;
-            min-height: 220px;
-            padding: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            background-color: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            resize: vertical;
-            transition: all 0.2s ease;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: var(--focus-ring);
-            color: var(--text-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-
-        /* Footer */
-        footer {
-            background-color: white;
-            border-top: 1px solid var(--border-color);
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .made-with {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .repo-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .repo-link:hover { text-decoration: underline; }
-
-        .heart {
-            color: #ef4444;
-            display: inline-block;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 
 <body>
+    <header class="wrap top">
+        <a class="brand" href="#"><img src="./icon.png" alt="">Json Filler</a>
+        <nav aria-label="Main">
+            <a class="hide-sm" href="#try">Try it</a>
+            <a class="hide-sm" href="https://github.com/FADHILI-Josue/json-filler" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-primary btn-sm" href="https://chromewebstore.google.com/detail/hgfmldndmbpfemfelmcpalmjgepliiog" target="_blank" rel="noopener">Add to Chrome</a>
+        </nav>
+    </header>
+
     <main>
-        <header>
-            <div class="hero-badge">New Version 2.0</div>
-            <div style="display: flex;align-items: center;justify-content: center; margin-bottom: 16px;">
-                <img src="./icon.png" alt="json filler logo" height="70" style="margin-right: 15px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                <h1 style="margin:0px;">Json Filler</h1>
-            </div>
-            
-            <p class="subtitle">
-                Stop typing manual JSON. Automatically fill <strong>Swagger UI</strong>, Postman, and web forms with realistic, context-aware dummy data.
-            </p>
-
-            <a href="https://chromewebstore.google.com/detail/hgfmldndmbpfemfelmcpalmjgepliiog?utm_source=item-share-cb" target="_blank" class="cta-button">
-                Get it on Chrome Web Store
-            </a>
-            
-            <div class="instructions">
-                <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">Try it right here:</div>
-                <ol class="step-list">
-                    <li>Right-click inside any code block below.</li>
-                    <li>Select <strong>Fill with random data</strong> from the context menu.</li>
-                    <li>Watch it detect types (Email, UUID, Dates) automatically!</li>
-                </ol>
-            </div>
-        </header>
-
-        <div class="grid">
-            <!-- Case 1 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Swagger / OpenAPI Schema</h2>
-                    <span class="tag">API</span>
-                </div>
-<textarea spellcheck="false">{
-  "id": 101,
-  "username": "jdoe",
-  "email": "user@example.com",
-  "phone": "+1-555-0100",
-  "role": "ADMIN"
-}</textarea>
-            </div>
-            
-            <!-- Case 2 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Complex User Profile</h2>
-                    <span class="tag">NESTED</span>
-                </div>
-<textarea spellcheck="false">{
-  "user": {
-    "uuid": "123e4567-e89b-12d3-a456-426614174000",
-    "details": {
-      "firstName": "Jane",
-      "lastName": "Doe",
-      "dob": "1990-01-01"
-    },
-    "address": {
-      "street": "123 Main St",
-      "zipCode": "90210"
-    }
-  }
-}</textarea>
+        <div class="wrap hero">
+            <div class="badge"><i></i>Free Chrome extension</div>
+            <h1>Fill Swagger request bodies with <span class="mark">realistic data</span></h1>
+            <p>Right-click any JSON box and pick <span class="pill"><img src="./icon.png" alt="">Fill with random data</span><br>Emails, IDs, names, dates and numbers are filled in for you.</p>
+            <div class="actions">
+                <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/hgfmldndmbpfemfelmcpalmjgepliiog" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                    Add to Chrome, it's free
+                </a>
+                <a class="btn" href="#try">Try it here</a>
             </div>
 
-            <!-- Case 3 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Product Lists</h2>
-                    <span class="tag">ARRAYS</span>
+            <p class="demo-label">Watch how it works</p>
+            <div class="window" id="demo">
+                <div class="window-bar"><span class="method">POST</span><code>/api/users</code>
+                    <button class="btn" id="replay" type="button">Replay</button>
                 </div>
-<textarea spellcheck="false">{
-  "products": [
-    {
-      "sku": "PROD-001",
-      "name": "Widget A",
-      "price": 29.99,
-      "inStock": true
-    },
-    {
-      "sku": "PROD-002",
-      "name": "Widget B",
-      "price": 45.50,
-      "inStock": false
-    }
-  ]
-}</textarea>
-            </div>
-
-            <!-- Case 4 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Company Metadata</h2>
-                    <span class="tag">HEURISTICS</span>
+                <pre class="code" id="code" aria-live="polite"></pre>
+                <div class="menu" id="menu" aria-hidden="true">
+                    <div>Cut</div><div>Copy</div><div>Paste</div><hr>
+                    <div class="item" id="menuItem"><img src="./icon.png" alt="">Fill with random data</div>
                 </div>
-<textarea spellcheck="false">{
-  "organization": {
-    "name": "Acme Corp",
-    "website": "https://acme.com",
-    "founded": 1985,
-    "description": "A global leader in widgets."
-  },
-  "metadata": {
-    "createdAt": "2023-10-25T10:00:00Z",
-    "updatedAt": "2023-10-26T12:00:00Z",
-    "version": 1.5
-  }
-}</textarea>
+                <div class="cursor" id="cursor" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 2l16 10.5-7 1.5-3.5 7z" fill="#111827" stroke="#fff" stroke-width="1.5"/></svg>
+                    <span class="tip" id="tip"></span>
+                </div>
             </div>
         </div>
+
+        <section>
+            <div class="wrap">
+                <h2>How it works</h2>
+                <p class="sub">No setup. It reads your JSON and picks a fitting value for each field.</p>
+                <div class="steps">
+                    <div><span class="n">1</span><h3>Reads the value</h3><p>An <span class="mark">email</span> becomes a new email, a <span class="mark">UUID</span> a new UUID, a link a new link.</p></div>
+                    <div><span class="n">2</span><h3>Reads the field name</h3><p>When the value is just <code class="inline">"string"</code>, names like <code class="inline">firstName</code> or <code class="inline">userId</code> decide.</p></div>
+                    <div><span class="n">3</span><h3>Keeps numbers similar</h3><p>Same sign, digits and decimals, so <code class="inline">29.99</code> stays a <span class="mark">price</span>.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="try" id="try">
+            <div class="wrap">
+                <h2>Try it yourself</h2>
+                <p class="sub">With the extension, <span class="mark">right-click a box</span>. Without it, press <strong>Fill</strong>. You can paste your own JSON too.</p>
+                <div class="pads">
+                    <div class="pad">
+                        <h3>Swagger default example</h3>
+<textarea wrap="off" spellcheck="false" aria-label="Swagger default example JSON">{
+  "userId": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "phoneNumber": "string",
+  "companyName": "string",
+  "isActive": true
+}</textarea>
+                        <div class="pad-actions"><button class="btn btn-primary" type="button" data-fill>Fill</button><button class="btn" type="button" data-reset>Reset</button><span class="error" role="status"></span></div>
+                    </div>
+                    <div class="pad">
+                        <h3>Nested with arrays</h3>
+<textarea wrap="off" spellcheck="false" aria-label="Nested JSON with arrays">{
+  "user": {
+    "uuid": "123e4567-e89b-42d3-a456-426614174000",
+    "email": "jane@example.com",
+    "dob": "1990-01-01"
+  },
+  "products": [
+    { "sku": "PROD-001", "price": 29.99, "stock": 120 },
+    { "sku": "PROD-002", "price": 45.50, "stock": 8 }
+  ]
+}</textarea>
+                        <div class="pad-actions"><button class="btn btn-primary" type="button" data-fill>Fill</button><button class="btn" type="button" data-reset>Reset</button><span class="error" role="status"></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
-        <div class="footer-content">
-            <div class="made-with">
-                Open Source Project by <a href="https://github.com/FADHILI-Josue/json-filler" target="_blank" class="repo-link">FADHILI Josue</a>
-            </div>
-            
-            <div class="support-text">
-                Save hours of manual data entry in Swagger UI.
-            </div>
-
-            <!-- Buy Me A Coffee Button -->
-            <a href="https://buymeacoffee.com/fadhilijosz" target="_blank">
-                <img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" alt="Buy Me A Coffee" style="height: 60px; width: 250px;">
-            </a>
+        <div class="wrap">
+            <span>Open source by <a href="https://github.com/FADHILI-Josue" target="_blank" rel="noopener">FADHILI Josue</a></span>
+            <nav aria-label="Footer">
+                <a href="https://github.com/FADHILI-Josue/json-filler" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/FADHILI-Josue/json-filler/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+            </nav>
+            <a href="https://buymeacoffee.com/fadhilijosz" target="_blank" rel="noopener"><img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" alt="Buy me a coffee"></a>
         </div>
     </footer>
+
+    <script src="./json-filler.js"></script>
+    <script>
+        const fill = (json) => JsonFiller.generateFakeData(JSON.parse(json));
+        const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+        const TOKEN = /("(?:\\.|[^"\\])*")(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g;
+
+        // Colour JSON; values that differ from `before` flash
+        function highlight(json, before) {
+            const old = before ? [...before.matchAll(TOKEN)].filter((m) => !m[2]).map((m) => m[0]) : [];
+            let i = 0;
+            return esc(json).replace(TOKEN, (m, str, colon) => {
+                if (colon) return `<span class="k">${str}</span>${colon}`;
+                const cls = str ? "s" : /^(true|false|null)$/.test(m) ? "b" : "n";
+                const changed = before && old[i] !== undefined && old[i] !== m ? " flash" : "";
+                i++;
+                return `<span class="${cls}${changed}">${m}</span>`;
+            });
+        }
+
+        // Hero demo: cursor right-clicks the body, picks the menu item, values fill in
+        const template = JSON.stringify({ userId: "string", firstName: "string", lastName: "string", email: "string", phone: "string", companyName: "string", age: 0, isActive: true }, null, 2);
+        const win = document.getElementById("demo");
+        const code = document.getElementById("code");
+        const menu = document.getElementById("menu");
+        const item = document.getElementById("menuItem");
+        const cursor = document.getElementById("cursor");
+        const tip = document.getElementById("tip");
+        const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let shown = template, timers = [];
+        code.innerHTML = highlight(template);
+
+        const moveTo = (x, y) => { cursor.style.transform = `translate(${x}px, ${y}px)`; };
+        const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+        function click(label) {
+            cursor.classList.add("press");
+            tip.textContent = label;
+            tip.classList.add("show");
+            at(150, () => cursor.classList.remove("press"));
+            at(1000, () => tip.classList.remove("show")); // tooltip hides a second after the click
+        }
+
+        function play() {
+            timers.forEach(clearTimeout);
+            timers = [];
+            menu.classList.remove("open");
+            item.classList.remove("hover");
+            tip.classList.remove("show");
+            const next = fill(template);
+            if (calm) { code.innerHTML = highlight(next, shown); shown = next; return; }
+
+            const box = code.getBoundingClientRect(), frame = win.getBoundingClientRect();
+            const x = box.left - frame.left + Math.min(box.width * 0.45, 240);
+            const y = box.top - frame.top + box.height * 0.35;
+
+            cursor.style.transition = "none";
+            moveTo(frame.width - 40, frame.height - 30);
+            cursor.style.opacity = "1";
+            cursor.offsetHeight; // apply start position before animating
+            cursor.style.transition = "";
+
+            at(100, () => { moveTo(x, y); code.classList.add("active"); });
+            at(4400, () => code.classList.remove("active"));
+            at(900, () => {
+                click("Right-click");
+                menu.style.left = `${x + 4}px`;
+                menu.style.top = `${y + 4}px`;
+                menu.classList.add("open");
+            });
+            at(2000, () => {
+                const r = item.getBoundingClientRect();
+                moveTo(r.left - frame.left + 40, r.top - frame.top + r.height / 2 - 4);
+            });
+            at(2700, () => { item.classList.add("hover"); });
+            at(3000, () => click("Click"));
+            at(3250, () => {
+                menu.classList.remove("open");
+                code.innerHTML = highlight(next, shown);
+                shown = next;
+            });
+            at(4400, () => { cursor.style.opacity = "0"; });
+        }
+        document.getElementById("replay").addEventListener("click", play);
+        setTimeout(play, 600);
+
+        // Playground: Fill without the extension, Reset to the original
+        document.querySelectorAll(".pad").forEach((pad) => {
+            const ta = pad.querySelector("textarea");
+            const err = pad.querySelector(".error");
+            const original = ta.value;
+            pad.querySelector("[data-fill]").addEventListener("click", () => {
+                try { ta.value = fill(ta.value); err.textContent = ""; }
+                catch { err.textContent = "Not valid JSON"; }
+            });
+            pad.querySelector("[data-reset]").addEventListener("click", () => { ta.value = original; err.textContent = ""; });
+        });
+    </script>
 </body>
 </html>
