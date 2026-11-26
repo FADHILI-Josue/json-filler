@@ -41,3 +41,5 @@ Thumbs.db
 # Testing / Coverage
 coverage/
 .nyc_output/
+# Packed extension
+*.zip

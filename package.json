@@ -9,6 +9,7 @@
     "build:popup": "esbuild src/popup.ts --bundle --outfile=build/popup.js --format=iife --platform=browser",
     "build": "npm run build:content && npm run build:background && npm run build:popup",
     "build:docs": "esbuild src/utils/generator/index.ts --bundle --format=iife --global-name=JsonFiller --minify --outfile=docs/json-filler.js",
+    "zip": "npm run build && node scripts/zip.mjs",
     "test": "tsc --noEmit && esbuild src/generator.test.ts --bundle --platform=node --outfile=build/test.cjs --log-level=warning && node build/test.cjs"
   },
   "keywords": [],
